@@ -1,0 +1,44 @@
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Map;
+import javax.net.ssl.HttpsURLConnection;
+import org.apache.http.HttpServerConnection;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+import net.minecraft.client.resources.SkinManager.SkinAvailableCallback;
+import us.loki.legit.Client;
+
+public class Capes {
+	//lol this is from hexception
+	//fucking halfpetal wont verify me on capeapi
+	//fuck him, i've been waiting since it went public
+	//im not paying that cunt $5
+  //switch url to your own or it will only show a cape for my alt that i use
+	private static JsonObject capesJson;
+	private static JsonParser jsonParser = new JsonParser();
+	
+	public static void getCapes(GameProfile gameprofile, Map skinMap, SkinAvailableCallback callback) {
+		if(capesJson == null) {
+			try {
+				HttpsURLConnection connection = (HttpsURLConnection) new URL("https://www.dropbox.com/s/rcxghogwpc6fsc7/document-3.json?raw=1").openConnection();
+				connection.connect();
+				capesJson = jsonParser.parse(new InputStreamReader(connection.getInputStream())).getAsJsonObject();
+			}catch(Exception e) {
+				Client.instance.logger.Error("Client fucked up and failed to load cape" );
+				e.printStackTrace();
+				return;
+			}
+			try {
+				if(capesJson.has(gameprofile.getName())) {
+					skinMap.put(Type.CAPE, new MinecraftProfileTexture(capesJson.get(gameprofile.getName()).getAsString(), null));
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+
