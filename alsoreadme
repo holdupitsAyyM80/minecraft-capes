@@ -1,0 +1,14 @@
+if you want method 1 to work properly (for you + others), you need to switch the link
+make it a dropbox thing or a direct link to where you will host this
+must be a .json file
+to actually do it, copy the stuff from my link into the .json file
+change out my username with yours and then change the link to the image
+to actually add people, on the next line, add this (inside the {}):
+
+"username": "link"
+
+change the username to the player's actual username, and the link to a direct link to an image
+(imgur is best tbh)
+
+and then boom it works
+
